@@ -1,4 +1,4 @@
-# 데이터베이스 record 삭제
+# Repository Method - remove/delete
 
 Repository가 제공하는 메서드 remove, delete
 
