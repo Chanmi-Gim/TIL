@@ -8,7 +8,7 @@
     -   payload : 실제로 전달하고자 하는 데이터 (유저 정보, 만료기간, 주제 등등)
     -   verify signature : 인코딩한 header와 인코딩한 Payload의 정보를 합친 후 비밀키와 함께 암호화 알고리즘을 이용하여 암호화해서 만든 서명
     -   3가지 부분을 합치면 'Header.Payload.Signature' 형태의 문자열이 된다.
-        ![Alt text](jwt1.png) 출처 : [jwt.io](https://jwt.io/)
+        ![Alt text]([img]jwt1.png) 출처 : [jwt.io](https://jwt.io/)
 -   작동방식
 
     1. 사용자가 아이디와 비밀번호로 로그인 시도한다.
@@ -17,9 +17,9 @@
     4. 사용자는 이후 요청에 이 JWT를 포함해서 서버에 전달한다. 일반적으로 HTTP 헤더의 Authorization 부분에 넣어서 전달한다.
     5. 서버는 JWT가 유효한지 확인하고 맞다면 해당 사용자의 요청을 처리한다.
 
-        ![Alt text](jwt2.png)
+        ![Alt text]([img]jwt2.png)
 
-        ![Alt text](jwt3.png)
+        ![Alt text]([img]jwt3.png)
 
 -   장점
     -   상태를 유지하지 않아도 되므로 서버의 부하가 감소한다.
