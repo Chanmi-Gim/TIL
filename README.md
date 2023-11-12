@@ -11,6 +11,7 @@ It's a repository that records the knowledge you learned today.
 
 ## JavaScript
 
+-   Iterator
 -   Promise
 
 ## TypeScript
