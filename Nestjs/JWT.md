@@ -6,7 +6,7 @@
 -   구조
     -   header : 토큰에 대한 메타데이터 포함 (토큰 타입, 암호화 알고리즘 정보 [sha256, rsa...])
     -   payload : 실제로 전달하고자 하는 데이터 (유저 정보, 만료기간, 주제 등등)
-    -   verify signature : 인코딩한 header와 인코딩한 Payload의 정보를 합친 후 비밀키와 함께 암호화 알고리즘을 이용하여 암호화해서 만든 서명
+    -   verify signature : 인코딩한 header와 인코딩한 Payload의 정보를 합친 후 secret text와 함께 암호화 알고리즘을 이용하여 암호화해서 만든 서명
     -   3가지 부분을 합치면 'Header.Payload.Signature' 형태의 문자열이 된다.
         ![Alt text]([img]jwt1.png) 출처 : [jwt.io](https://jwt.io/)
 -   작동방식
