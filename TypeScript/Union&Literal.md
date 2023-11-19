@@ -91,3 +91,17 @@
         return "radius" in shape ? Math.PI * shape.radius ** 2 : shape.sideLength ** 2;
     }
     ```
+
+## 리터럴타입
+
+변수가 특정한 원시값을 가져야함을 정의하는 타입
+
+-   할당가능성 : 더 넓은 개념의 타입이라고 해도 리터럴에 할당 불가
+    ```typescript
+    let lifespan: number | "ongoing" | "uncertain";
+    lifespan = 89;
+    lifespan = "ongoing";
+    lifespan = "byron"; // Error : 정해진 값만 가져야 함
+    let something = ""; // string 타입
+    lifespan = something; // Error : something이 string이라는 더 넓은 개념이라고 해도 더 구체적인 타입에 할당할 수 없음
+    ```
