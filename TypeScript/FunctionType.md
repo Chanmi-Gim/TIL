@@ -84,3 +84,23 @@ function a(song: string): string {}
     type a = () => string;
     function f(cb: a) {}
     ```
+
+## 함수 오버로드
+
+함수가 다양한 매개변수와 반환타입 조합을 가질 수 있도록 하는 기능
+
+-   오버로드 시그니처 : 함수가 다양한 입력형태를 받을 수 있도록 정의하는 부분. 구문 오류 생성 여부 결정시 확인하는 부분으로 ts가 js로 바뀌면 지워진다.
+    -   호출 시그니처 호환성 : 구현 시그니처에 있는 동일한 인덱스의 매개변수에 할당할 수 있어야 함.
+-   구현 시그니처 : 실제로 함수의 동작을 정의하는 부분. 오버로드된 시그니처들에 공통적으로 적용되는 코드가 들어가는 부분이다.
+
+```typescript
+// 오버로드 시그니처
+function f(data: string): string;
+function f(data: string, needle: string, haystack: string): string;
+function f(getData: () => string): string; // Error : 호출시그니처 호환성x
+
+// 구현 시그니처
+function f(data: string, needle?: string, haystack?: string): string {
+    return needle && haystack ? data.replace(needle, haystack) : data;
+}
+```
