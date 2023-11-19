@@ -20,3 +20,4 @@ It's a repository that records the knowledge you learned today.
 -   CompilerStep
 -   TypeSystem
 -   Type 종류 (Union & Literal)
+-   Type 종류 (Object)
