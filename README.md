@@ -23,3 +23,7 @@ It's a repository that records the knowledge you learned today.
 -   Type 종류 (Object)
 -   Type 종류 (Function)
 -   Type 종류 (Array)
+
+## Network
+
+-   HTTP & WebSocket 차이점
