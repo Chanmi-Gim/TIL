@@ -22,3 +22,4 @@ It's a repository that records the knowledge you learned today.
 -   Type 종류 (Union & Literal)
 -   Type 종류 (Object)
 -   Type 종류 (Function)
+-   Type 종류 (Array)
