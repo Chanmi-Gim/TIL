@@ -61,7 +61,7 @@ let suser: { id: number; name: string };
     } else {
         poem.rhymes;
     }
-    // 리터럴 판별값 사용
+    // 리터럴 판별값 사용 (판별된 유니언(내로잉) - 판별값 : page, 판별자 : poem.type === "pages")
     if (poem.type === "pages") {
         // poem.type : 리터럴 타입을 갖는 공통 속성으로 다른 판별값을 가짐
         poem.pages;
