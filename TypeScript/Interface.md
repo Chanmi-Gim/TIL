@@ -170,7 +170,7 @@
         console.log(teacher.sayhello());
     }
     withT(new Teacher());
-    withT({ sayhello: () => ["hah"] });
+    withT({ sayhello: () => ["hah"] }); // 클래스의 동일한 멤버를 모두 포함하는 모든 객체 타입을 클래스에 할당 가능
     withT({ sayhello: () => 123 }); // Error
     ```
 
