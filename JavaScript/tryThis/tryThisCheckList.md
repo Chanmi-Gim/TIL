@@ -13,8 +13,8 @@
 
 ## Control Statement & Repetitive Statement
 
--   [ ] sqrt&weekName - 1 ~ 10 사이의 정수에 대해 제곱근을 소숫점 3자리까지 출력하시오.
--   [ ] sqrt&weekName - 오늘 날짜의 요일을 출력하는 switch문을 사용해서 작성해 보고, switch문을 사용하지 않은 더 간단한 방법도 찾아보세요.
+-   [x] sqrt&weekName - 1 ~ 10 사이의 정수에 대해 제곱근을 소숫점 3자리까지 출력하시오.
+-   [x] sqrt&weekName - 오늘 날짜의 요일을 출력하는 switch문을 사용해서 작성해 보고, switch문을 사용하지 않은 더 간단한 방법도 찾아보세요.
 
 ## Closure
 
