@@ -18,10 +18,19 @@
 
 ## Closure
 
--   [ ] 평가 문제 - receipt 주문 받기 및 영수증 출력하기
--   [ ] recursive - 1 ~ 10까지의 원소로 이루어진 배열을 만드는 함수를 재귀함수와 TCO로 작성하시오. (단, array 메소드 사용하지 말고, destructuring을 사용하시오)
--   [ ] memoizedFibonacci - 피보나치 수열을 memoized하여 출력하는 함수를 작성해 보세요.
+-   [x] 평가 문제 - receipt 주문 받기 및 영수증 출력하기
+-   [x] recursive - 1 ~ 10까지의 원소로 이루어진 배열을 만드는 함수를 재귀함수와 TCO로 작성하시오. (단, array 메소드 사용하지 말고, destructuring을 사용하시오)
+-   [x] memoizedFunction - factorial을 memoized하여 출력하는 함수를 작성해 보세요.
+-   [x] memoizedFibonacci - 피보나치 수열을 memoized하여 출력하는 함수를 작성해 보세요.
 -   [ ] neverFullCallStackMemoizedFibonacci - 앞 장의 memoizedFibonacci를 CallStack이 풀 나지 않도록하는 neverFullCallStack 함수를 만들어 보시오.
+-   [x] string formatting - 오른 쪽과 같은 형태로 출력하는 fmt 함수를 작성하시오.
+-   [ ] ExecuteContext - 기본 forLoop
+-   [ ] ExecuteContext - inner/outer function
+-   [ ] ExecuteContext - 콜백 함수
+-   [ ] ExecuteContext - Closure1
+-   [ ] ExecuteContext - Closure2
+-   [ ] ExecuteContext - 할인금액 구하기
+-   [ ] ExecuteContext - 동시 접속자 수
 
 ## Object & Property
 
