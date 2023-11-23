@@ -13,4 +13,5 @@
 -   클라이언트와 서버 간 통신은 주로 브라우저-백엔드 간이지만, 백엔드-백엔드 간 통신도 가능하다.
 
 ![Alt text](img[http&websocket].png)
+
 출처 : https://ambassadorpatryk.com/2020/03/publish-web-socket-in-the-experience-layer/
