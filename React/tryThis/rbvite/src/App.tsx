@@ -1,54 +1,49 @@
 import { useState } from 'react';
 import './App.css';
 import Hello from './components/Hello';
+import My from './components/My';
 
+export type LoginUser = { id: number; name: string };
+export type Cart = { id: number; name: string; price: number };
+export type Session = {
+  loginUser: LoginUser | null;
+  cart: Cart[];
+};
+
+const SampleSession = {
+  // loginUser: null,
+  loginUser: { id: 1, name: 'Hong' },
+  cart: [
+    { id: 100, name: '라면', price: 3000 },
+    { id: 101, name: '컵라면', price: 2000 },
+    { id: 200, name: '파', price: 5000 },
+  ],
+};
 function App() {
   const [count, setCount] = useState(0);
-  const [age, setAge] = useState(0);
-  const [tmpName, setTmpName] = useState('');
-  const h1Style = { backgroundColor: 'green', color: 'white' };
-  const Title = ({ txt }: { txt: string }) => <h1 style={h1Style}>{txt}</h1>;
-  const plusCount = () => {
-    // setCount((count) => count + 1); // 이전 값을 참조
-    // setCount((count) => count + 1); // 이전 값을 참조
-    // setCount((count) => count + 1); // 이전 값을 참조
-    setCount(count + 1); // throttle 때문에 16ms로 걸려있어서 1만 증가하고 씹힘
-    setCount(count + 1);
-    setCount(count + 1);
-    setTmpName(`${tmpName}- ${count}`);
+  const [session, setSession] = useState<Session>(SampleSession);
+  const plusCount = () => setCount((count) => count + 1);
+  const login = () => {};
+  const logout = () => {
+    setSession({ ...session, loginUser: null });
   };
-  // Throttle
-  // function throttle<T extends any[]>(cb: (...args: T) => void, delay: number) {
-  //   let timer : ReturnType<typeof setTimeout>;
-  //   return (...args : T)=> {
-  //     if(timer) return;
-  //     timer = setTimeout(()=> {
-  //       cb(...args);
-  //     }, delay)
-  //   }
-  // }
-  // }
+
+  const removeCartItem = (itemId: number) => {
+    setSession({
+      ...session,
+      cart: session.cart.filter((x) => x.id !== itemId),
+    });
+  };
   return (
     <>
-      <Hello name='Kim' age={age} plusCount={plusCount}>
-        <strong>I'm hello's children</strong>
-      </Hello>
-      <Hello name={tmpName} age={age} plusCount={plusCount}>
-        <strong>I'm hello's children</strong>
-      </Hello>
-      {count && <Title txt={`Vite + React ${count}`} />}
-      <div className='card'>
-        <button onClick={() => plusCount}>
-          count is {count > 0 ? 'Big' : 'Zero'}
-        </button>
-        <button
-          onClick={() => {
-            setAge(age + 1);
-          }}
-        >
-          plusAge
-        </button>
-      </div>
+      <h2>count: {count}</h2>
+      <Hello name='홍길동' age={30} plusCount={plusCount} />
+      <My
+        session={session}
+        login={login}
+        logout={logout}
+        removeCartItem={removeCartItem}
+      />
     </>
   );
 }
