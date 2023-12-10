@@ -1,4 +1,4 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useEffect, useRef } from 'react';
 import { LoginUser } from '../App';
 
 type Props = {
@@ -17,6 +17,17 @@ const Login = ({ login }: Props) => {
     console.log(name);
     login({ id, name });
   };
+
+  const focusName = () => {
+    if (nameRef.current) nameRef.current.focus();
+  };
+
+  //focus
+  useEffect(() => {
+    if (idRef.current) idRef.current.value = '100';
+    focusName();
+  }, []);
+
   return (
     <form onSubmit={submit}>
       <>

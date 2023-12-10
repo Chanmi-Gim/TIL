@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import './App.css';
 import Hello from './components/Hello';
 import My from './components/My';
@@ -19,6 +19,19 @@ const SampleSession = {
     { id: 200, name: '파', price: 5000 },
   ],
 };
+
+type ChildHandler = {
+  appendPeriod: () => void;
+};
+const ChildComponent = forwardRef((_, ref) => {
+  const [childText, setChildText] = useState('');
+  const handler: ChildHandler = {
+    appendPeriod: () => setChildText((c) => c + '.'),
+  };
+  useImperativeHandle(ref, () => handler);
+  return <>child: {childText}</>;
+});
+
 function App() {
   const [count, setCount] = useState(0);
   const [session, setSession] = useState<Session>(SampleSession);
@@ -38,8 +51,13 @@ function App() {
       cart: session.cart.filter((x) => x.id !== itemId),
     });
   };
+  const childRef = useRef<ChildHandler>(null);
   return (
     <>
+      <ChildComponent ref={childRef} />
+      <button onClick={() => childRef.current?.appendPeriod()}>
+        Call Child Component
+      </button>
       <h2>count: {count}</h2>
       <Hello name='홍길동' age={30} plusCount={plusCount} />
       <My
