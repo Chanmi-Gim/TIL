@@ -7,7 +7,7 @@ type Props = {
 
 const Login = ({ login }: Props) => {
   const idRef = useRef<HTMLInputElement>(null);
-  const nameRef = useRef<HTMLInputElement>(null); //과거에는 타입에 Null을 했어야했는데 버전 업되어 안해도 된다.
+  const nameRef = useRef<HTMLInputElement>(null);
   console.log('>>Login');
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
