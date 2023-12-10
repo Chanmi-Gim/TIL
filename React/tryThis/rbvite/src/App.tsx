@@ -23,7 +23,11 @@ function App() {
   const [count, setCount] = useState(0);
   const [session, setSession] = useState<Session>(SampleSession);
   const plusCount = () => setCount((count) => count + 1);
-  const login = () => {};
+
+  const login = ({ id, name }: LoginUser) => {
+    if (!name) return alert('Input users name, Please.');
+    setSession({ ...session, loginUser: { id, name } });
+  };
   const logout = () => {
     setSession({ ...session, loginUser: null });
   };

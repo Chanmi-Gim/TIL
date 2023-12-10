@@ -8,7 +8,6 @@ type Props = {
 };
 
 const Hello = ({ name, age, plusCount }: PropsWithChildren<Props>) => {
-  // age = age + 1;
   const helloId = useId();
   console.log('hello.age>>', age);
   return (
@@ -19,9 +18,9 @@ const Hello = ({ name, age, plusCount }: PropsWithChildren<Props>) => {
         color: 'white',
       }}
     >
-      <h1 id={helloId}>
+      <h2 id={helloId}>
         Hello, {name} ({age}세)
-      </h1>
+      </h2>
       <button onClick={plusCount}>+count</button>
     </div>
   );

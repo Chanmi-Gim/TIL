@@ -1,18 +1,29 @@
+import { ChangeEvent, useState } from 'react';
+import { LoginUser } from '../App';
+
 type Props = {
-  login: () => void;
+  login: ({ id, name }: LoginUser) => void;
 };
 
 const Login = ({ login }: Props) => {
-  console.log('@@@Login');
+  const [id, setUserId] = useState(0);
+  const [name, setUserName] = useState('');
+  console.log('>>Login');
+
+  // Setter를 사용하지 않고 따로 함수로 만들면 여러개의 set 사용 가능하므로 편리할 때가 있다. 가독성이 더 좋다.
+  const changeId = (evt: ChangeEvent<HTMLInputElement>) =>
+    setUserId(Number(evt.currentTarget.value));
+  const changeName = (evt: ChangeEvent<HTMLInputElement>) =>
+    setUserName(evt.currentTarget.value);
   return (
     <>
       <div>
-        <b>Login ID(숫자):</b> <input type='number' />
+        Login ID(숫자): <input type='number' value={id} onChange={changeId} />
       </div>
       <div>
-        <b>Login Name:</b> <input type='text' />
+        Login Name: <input type='text' value={name} onChange={changeName} />
       </div>
-      <button onClick={login}>Login</button>
+      <button onClick={() => login({ id, name })}>Login</button>
     </>
   );
 };
