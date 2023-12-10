@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { FormEvent, useRef } from 'react';
 import { LoginUser } from '../App';
 
 type Props = {
@@ -6,25 +6,29 @@ type Props = {
 };
 
 const Login = ({ login }: Props) => {
-  const [id, setUserId] = useState(0);
-  const [name, setUserName] = useState('');
+  const idRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null); //과거에는 타입에 Null을 했어야했는데 버전 업되어 안해도 된다.
   console.log('>>Login');
 
-  // Setter를 사용하지 않고 따로 함수로 만들면 여러개의 set 사용 가능하므로 편리할 때가 있다. 가독성이 더 좋다.
-  const changeId = (evt: ChangeEvent<HTMLInputElement>) =>
-    setUserId(Number(evt.currentTarget.value));
-  const changeName = (evt: ChangeEvent<HTMLInputElement>) =>
-    setUserName(evt.currentTarget.value);
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // action 타지 않는다.
+    const id = Number(idRef.current?.value);
+    const name = nameRef.current?.value || '';
+    console.log(name);
+    login({ id, name });
+  };
   return (
-    <>
-      <div>
-        Login ID(숫자): <input type='number' value={id} onChange={changeId} />
-      </div>
-      <div>
-        Login Name: <input type='text' value={name} onChange={changeName} />
-      </div>
-      <button onClick={() => login({ id, name })}>Login</button>
-    </>
+    <form onSubmit={submit}>
+      <>
+        <div>
+          Login ID : <input type='number' ref={idRef} />
+        </div>
+        <div>
+          Login Name : <input type='text' ref={nameRef} />
+        </div>
+        <button type='submit'>Login</button>
+      </>
+    </form>
   );
 };
 export default Login;
