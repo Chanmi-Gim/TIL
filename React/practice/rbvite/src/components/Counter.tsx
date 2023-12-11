@@ -1,12 +1,18 @@
-import { useState } from 'react';
-const Counter = () => {
-    const [count, setCount] = useState(0);
-    return (
-        <>
-            <h1>Count : {count}</h1>
-            <button onClick={()=>setCount(count+1)}> +1</button>
-            <button onClick={()=>setCount(count-1)}> -1</button>
-        </>
-    )
+import { forwardRef, useImperativeHandle } from 'react';
+
+type Props = {
+    increaseOrDecreaseCount : (amount : number) => void 
 }
-export default Counter
+const Counter = forwardRef(({increaseOrDecreaseCount} : Props, ref)=>{
+    const handleIncrease = () => {increaseOrDecreaseCount(1)}
+    const handleDecrease = () => {increaseOrDecreaseCount(-1)}
+    useImperativeHandle(ref, ()=> ({handleIncrease, handleDecrease}))
+    return (
+        <div>
+            <button onClick={handleIncrease}>+</button>
+            <button onClick={handleDecrease}>-</button>
+        </div>
+    )
+})
+
+export default Counter;

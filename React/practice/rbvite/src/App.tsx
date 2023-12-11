@@ -1,9 +1,13 @@
+import { useRef, useState } from 'react';
 import './App.css';
 import Box from './components/Box';
 import Counter from './components/Counter';
 import Title from './components/Title';
 
 function App() {
+  const [count, setCount] = useState(0)
+  const counterRef = useRef();
+  const increaseOrDecreaseCount = (amount : number) => setCount((prevCount)=> prevCount + amount)
   return (
     <>
       <Box
@@ -17,7 +21,8 @@ function App() {
           sub title: react basic
         </Title>
       </Box>
-      <Counter/>
+      <h1>Count: {count}</h1>
+      <Counter ref={counterRef} increaseOrDecreaseCount={increaseOrDecreaseCount} />
     </>
   );
 }
