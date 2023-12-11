@@ -36,9 +36,10 @@ function App() {
   const [count, setCount] = useState(0);
   const [session, setSession] = useState<Session>(SampleSession);
   const plusCount = () => setCount((count) => count + 1);
-
   const login = ({ id, name }: LoginUser) => {
-    if (!name) return alert('Input users name, Please.');
+    if (!name) {
+      return alert('Input users name, Please.');
+    }
     setSession({ ...session, loginUser: { id, name } });
   };
   const logout = () => {
@@ -52,6 +53,17 @@ function App() {
     });
   };
   const childRef = useRef<ChildHandler>(null);
+  const addCartItem = (itemName: string, itemPrice: number) => {
+    const id =
+      session.cart
+        .map((cart) => cart.id)
+        .sort()
+        .at(-1) || 0;
+    setSession({
+      ...session,
+      cart: [...session.cart, { id: id + 1, name: itemName, price: itemPrice }],
+    });
+  };
   return (
     <>
       <ChildComponent ref={childRef} />
@@ -64,6 +76,7 @@ function App() {
         session={session}
         login={login}
         logout={logout}
+        addCartItem={addCartItem}
         removeCartItem={removeCartItem}
       />
     </>
