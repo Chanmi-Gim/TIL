@@ -4,7 +4,7 @@ type SessionContextProp = {
   session: Session;
   login: ({ id, name }: LoginUser) => void;
   logout: () => void;
-  addCartItem: (name: string, price: number) => void;
+  saveCartItem: (id: number, name: string, price: number) => void;
   removeCartItem: (id: number) => void;
 };
 
@@ -17,7 +17,7 @@ const SessionContext = createContext<SessionContextProp>({
   session: DEFAULT_SESSION,
   login: () => {},
   logout: () => {},
-  addCartItem: () => {},
+  saveCartItem: () => {},
   removeCartItem: () => {},
 });
 
@@ -33,15 +33,23 @@ export const SessionContextProvider = ({ children }: PropsWithChildren) => {
   const logout = () => {
     setSession({ ...session, loginUser: null });
   };
-  const addCartItem = (itemName: string, itemPrice: number) => {
-    const id =
-      session.cart
-        .map((cart) => cart.id)
-        .sort()
-        .at(-1) || 0;
+  const saveCartItem = (
+    itemId: number,
+    itemName: string,
+    itemPrice: number
+  ) => {
+    const { cart } = session;
+    itemId = itemId || Math.max(...session.cart.map((cart) => cart.id), 0) + 1;
+    const item = cart.find((item) => item.id === itemId);
+    if (item) {
+      item.name = itemName;
+      item.price = itemPrice;
+    } else {
+      cart.push({ id: itemId, name: itemName, price: itemPrice });
+    }
     setSession({
       ...session,
-      cart: [...session.cart, { id: id + 1, name: itemName, price: itemPrice }],
+      cart: [...cart],
     });
   };
 
@@ -58,7 +66,7 @@ export const SessionContextProvider = ({ children }: PropsWithChildren) => {
         session,
         login,
         logout,
-        addCartItem,
+        saveCartItem,
         removeCartItem,
       }}
     >

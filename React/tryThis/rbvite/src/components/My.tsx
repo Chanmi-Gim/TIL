@@ -7,9 +7,11 @@ const My = () => {
   console.log('@@@My');
   const {
     session: { loginUser, cart },
-    addCartItem,
+    saveCartItem,
     removeCartItem,
   } = useSession();
+
+  const itemIdRef = useRef<number>(0);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
 
@@ -25,9 +27,21 @@ const My = () => {
       alert('가격을 정확히 알려주세요!');
       return itemPriceRef.current?.focus();
     }
-    addCartItem(name, Number(price));
+    saveCartItem(itemIdRef.current, name, Number(price));
     itemNameRef.current.value = '';
     itemPriceRef.current.value = '';
+  };
+
+  const setCartItem = (id: number) => {
+    itemIdRef.current = id;
+    const selectedItem = cart.find((item) => item.id === id) || {
+      name: '',
+      price: 0,
+    };
+    if (itemNameRef.current && itemPriceRef.current) {
+      itemNameRef.current.value = selectedItem?.name;
+      itemPriceRef.current.value = '' + selectedItem?.price;
+    }
   };
   return (
     <>
@@ -36,7 +50,17 @@ const My = () => {
       <ul>
         {cart.map(({ id, name, price }) => (
           <li key={id}>
-            <small>{id}</small> <strong>{name}</strong>
+            <small>[id:{id}]</small>{' '}
+            <button
+              onClick={() => setCartItem(id)}
+              style={{
+                paddingTop: 0,
+                paddingBottom: '0.2rem',
+                backgroundColor: 'inherit',
+              }}
+            >
+              <strong>{name}</strong>
+            </button>
             <small>({price.toLocaleString()}원)</small>
             <button onClick={() => removeCartItem(id)}>X</button>
           </li>
