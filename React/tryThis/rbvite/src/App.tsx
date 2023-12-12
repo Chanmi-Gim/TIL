@@ -3,13 +3,7 @@ import './App.css';
 import Hello from './components/Hello';
 import My from './components/My';
 import { LoginHandle } from './components/Login';
-
-export type LoginUser = { id: number; name: string };
-export type Cart = { id: number; name: string; price: number };
-export type Session = {
-  loginUser: LoginUser | null;
-  cart: Cart[];
-};
+import { useCounter } from './hooks/counter-context';
 
 const SampleSession = {
   loginUser: null,
@@ -34,9 +28,8 @@ const ChildComponent = forwardRef((_, ref) => {
 });
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { count, plusCount } = useCounter();
   const [session, setSession] = useState<Session>(SampleSession);
-  const plusCount = () => setCount((count) => count + 1);
   const loginHandleRef = useRef<LoginHandle>(null);
   const login = ({ id, name }: LoginUser) => {
     if (!name) {
@@ -88,5 +81,5 @@ function App() {
     </>
   );
 }
-
+// 11월 10~ 12월 9일
 export default App;

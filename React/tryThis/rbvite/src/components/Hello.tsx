@@ -1,4 +1,5 @@
 import { PropsWithChildren, useId } from 'react';
+import { useCounter } from '../hooks/counter-context';
 
 type Props = {
   name: string;
@@ -7,8 +8,9 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const Hello = ({ name, age, plusCount }: PropsWithChildren<Props>) => {
+const Hello = ({ name, age }: PropsWithChildren<Props>) => {
   const helloId = useId();
+  const { plusCount } = useCounter();
   console.log('hello.age>>', age);
   return (
     <div

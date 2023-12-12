@@ -5,7 +5,6 @@ import {
   useImperativeHandle,
   useRef,
 } from 'react';
-import { LoginUser } from '../App';
 export type LoginHandle = {
   focusName: () => void;
 };
