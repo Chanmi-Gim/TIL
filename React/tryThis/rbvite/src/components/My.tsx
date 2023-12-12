@@ -1,4 +1,4 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { useSession } from '../hooks/session-context';
 import Profile from './Profile';
 import Login from './Login';
@@ -15,6 +15,19 @@ const My = () => {
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
 
+  const [hasDirty, setDirty] = useState(false);
+  const checkDirty = () => {
+    const id = itemIdRef.current;
+    const name = itemNameRef.current?.value;
+    const price = itemPriceRef.current?.value;
+    const selectedItem = !id
+      ? { name: '', price: '' }
+      : cart.find((item) => item.id === id) || {
+          name: '',
+          price: '',
+        };
+    setDirty(name !== selectedItem.name || price !== selectedItem.price);
+  };
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = itemNameRef.current?.value;
@@ -30,6 +43,7 @@ const My = () => {
     saveCartItem(itemIdRef.current, name, Number(price));
     itemNameRef.current.value = '';
     itemPriceRef.current.value = '';
+    setDirty(false);
   };
 
   const setCartItem = (id: number) => {
@@ -40,7 +54,7 @@ const My = () => {
     };
     if (itemNameRef.current && itemPriceRef.current) {
       itemNameRef.current.value = selectedItem?.name;
-      itemPriceRef.current.value = '' + selectedItem?.price;
+      itemPriceRef.current.value = selectedItem?.price.toString();
     }
   };
   return (
@@ -58,6 +72,7 @@ const My = () => {
                 paddingBottom: '0.2rem',
                 backgroundColor: 'inherit',
               }}
+              title='수정하기'
             >
               <strong>{name}</strong>
             </button>
@@ -66,9 +81,13 @@ const My = () => {
           </li>
         ))}
         <form onSubmit={submit}>
-          <input type='text' ref={itemNameRef} />
-          <input type='number' ref={itemPriceRef} />
-          <button type='submit'>Save</button>
+          <input type='text' ref={itemNameRef} onChange={() => checkDirty()} />
+          <input
+            type='number'
+            ref={itemPriceRef}
+            onChange={() => checkDirty()}
+          />
+          {hasDirty && <button type='submit'>Save</button>}
         </form>
       </ul>
     </>
