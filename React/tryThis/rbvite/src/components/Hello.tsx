@@ -8,23 +8,18 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const Hello = ({ name, age }: PropsWithChildren<Props>) => {
+const Hello = ({ name, age, children }: PropsWithChildren<Props>) => {
   const helloId = useId();
   const { plusCount } = useCounter();
-  console.log('hello.age>>', age);
   return (
-    <div
-      style={{
-        border: '3px solid black',
-        backgroundColor: 'blue',
-        color: 'white',
-      }}
-    >
-      <h2 id={helloId}>
+    <div style={{ border: '2px solid red' }}>
+      <h5 id={helloId}>
         Hello, {name} ({age}세)
-      </h2>
+      </h5>
+      {children}
       <button onClick={plusCount}>+count</button>
     </div>
   );
 };
+// Hello.defaultProps = { name: 'Choi' };
 export default Hello;

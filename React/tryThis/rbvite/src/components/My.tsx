@@ -1,25 +1,15 @@
-import { FormEvent, RefObject, useRef } from 'react';
-import Login, { LoginHandle } from './Login';
+import { FormEvent, useRef } from 'react';
+import { useSession } from '../hooks/session-context';
 import Profile from './Profile';
+import Login from './Login';
 
-type Props = {
-  session: Session;
-  login: ({ id, name }: LoginUser) => void;
-  logout: () => void;
-  loginHandleRef: RefObject<LoginHandle>;
-  removeCartItem: (itemId: number) => void;
-  addCartItem: (itemName: string, itemPrice: number) => void;
-};
-
-const My = ({
-  session: { loginUser, cart },
-  login,
-  logout,
-  loginHandleRef,
-  removeCartItem,
-  addCartItem,
-}: Props) => {
+const My = () => {
   console.log('@@@My');
+  const {
+    session: { loginUser, cart },
+    addCartItem,
+    removeCartItem,
+  } = useSession();
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
 
@@ -41,27 +31,21 @@ const My = ({
   };
   return (
     <>
-      {loginUser ? (
-        <Profile loginUser={loginUser} logout={logout} />
-      ) : (
-        <Login login={login} ref={loginHandleRef} />
-      )}
+      {loginUser ? <Profile /> : <Login />}
       <hr></hr>
-      아이템 담기
-      <form onSubmit={submit}>
-        name:<input type='text' ref={itemNameRef}></input>
-        price:<input type='number' ref={itemPriceRef}></input>
-        <button type='submit'>Save</button>
-      </form>
       <ul>
         {cart.map(({ id, name, price }) => (
           <li key={id}>
-            <small>[id:{id}]</small>
-            <strong>{name}</strong>
+            <small>{id}</small> <strong>{name}</strong>
             <small>({price.toLocaleString()}원)</small>
-            <button onClick={() => removeCartItem(id)}>DEL</button>
+            <button onClick={() => removeCartItem(id)}>X</button>
           </li>
         ))}
+        <form onSubmit={submit}>
+          <input type='text' ref={itemNameRef} />
+          <input type='number' ref={itemPriceRef} />
+          <button type='submit'>Save</button>
+        </form>
       </ul>
     </>
   );
