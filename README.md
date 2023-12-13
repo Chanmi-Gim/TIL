@@ -9,6 +9,11 @@ It's a repository that records the knowledge you learned today.
 -   JWT(Json Web Token)
 -   Middleware
 
+## React
+
+-   DOM & Rendering
+-   리액트 장점(CSR 렌더링 방식)
+
 ## JavaScript
 
 -   Iterator
@@ -32,4 +37,5 @@ It's a repository that records the knowledge you learned today.
 
 ## Network
 
--   HTTP & WebSocket 차이점
+-   HTTP & WebSocket
+-   SocketIO
