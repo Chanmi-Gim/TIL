@@ -11,8 +11,10 @@ It's a repository that records the knowledge you learned today.
 
 ## React
 
+-   Architecture & Rendering
+-   리액트 장점
 -   DOM & Rendering
--   리액트 장점(CSR 렌더링 방식)
+-   JSX (JavaScript XML)
 
 ## JavaScript
 
