@@ -41,6 +41,7 @@ const My = () => {
       return itemPriceRef.current?.focus();
     }
     saveCartItem(itemIdRef.current, name, Number(price));
+    itemIdRef.current = 0;
     itemNameRef.current.value = '';
     itemPriceRef.current.value = '';
     setDirty(false);

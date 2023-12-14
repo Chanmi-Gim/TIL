@@ -8,7 +8,11 @@ const Profile = () => {
   } = useSession();
   return (
     <>
-      <div>User Name: {loginUser?.name}</div>
+      <div>
+        {' '}
+        유저이름: {loginUser?.name}
+        <small>({loginUser?.id})</small>
+      </div>
       <button onClick={logout}>Logout</button>
     </>
   );
