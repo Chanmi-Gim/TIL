@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useFetch } from './fetch-hooks';
 
 type SessionContextProp = {
   session: Session;
@@ -31,16 +32,11 @@ export const SessionContextProvider = ({ children }: PropsWithChildren) => {
   const [session, setSession] = useState<Session>(DEFAULT_SESSION);
 
   const url = '/data/sample.json';
+  const data = useFetch<Session>(url);
   useEffect(() => {
-    const controller = new AbortController(); // AbortController: Promise 취소
-    const { signal } = controller;
-    fetch(url, { signal })
-      .then((res) => res.json())
-      .then((data) => setSession(data));
-    return () => {
-      controller.abort();
-    };
-  }, []);
+    if (data) setSession(data);
+    console.log('data: ', data);
+  }, [data]);
 
   const login = ({ id, name }: LoginUser) => {
     if (!name) {
