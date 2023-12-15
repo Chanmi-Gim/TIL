@@ -1,6 +1,6 @@
 import {
   forwardRef,
-  useEffect,
+  // useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -29,36 +29,19 @@ function App() {
   const giftHandleRef = useRef<GiftHandle>(null);
   const [badCount, setBadCount] = useState(0);
   const [goodCount, setGoodCount] = useState(0);
-  const { useInterval } = useTimer();
+  const { useInterval, useTimeout } = useTimer();
 
   useInterval(() => setBadCount((pre) => pre + 1), 1000);
-
-  useEffect(() => {
-    const intl = setInterval(() => setGoodCount((pre) => pre + 1), 1000);
-    return () => clearInterval(intl);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(
-      (initSec: number) => {
-        console.log('>>useEffect');
-        setBadCount(initSec);
-        setGoodCount(initSec);
-      },
-      5000,
-      100
-    );
-    return () => clearTimeout(timer);
-  }, []);
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     console.log('>>useEffect');
-  //     setBadCount(100);
-  //     setGoodCount(100);
-  //   }, 5000);
-  //   return () => clearTimeout(timer);
-  // }, []);
-
+  useInterval(() => setGoodCount((pre) => pre + 1), 1000);
+  useTimeout(
+    (initSec) => {
+      console.log('>>useEffect');
+      setBadCount(initSec);
+      setGoodCount(initSec);
+    },
+    5000,
+    100
+  );
   return (
     <>
       <button onClick={() => giftHandleRef.current?.getGift()}>
