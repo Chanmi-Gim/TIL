@@ -10,5 +10,6 @@ export const useTimer = () => {
       return () => clearInterval(timer);
     }, []);
   };
-  return { useInterval };
+  const useTimeout = () => {};
+  return { useInterval, useTimeout };
 };

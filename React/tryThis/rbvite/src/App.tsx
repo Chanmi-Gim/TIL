@@ -39,13 +39,25 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log('>>useEffect');
-      setBadCount(100);
-      setGoodCount(100);
-    }, 5000);
+    const timer = setTimeout(
+      (initSec: number) => {
+        console.log('>>useEffect');
+        setBadCount(initSec);
+        setGoodCount(initSec);
+      },
+      5000,
+      100
+    );
     return () => clearTimeout(timer);
   }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     console.log('>>useEffect');
+  //     setBadCount(100);
+  //     setGoodCount(100);
+  //   }, 5000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
     <>
@@ -58,7 +70,12 @@ function App() {
         plusCount={plusCount}
         ref={giftHandleRef}
       ></Hello>
-      <h2 style={{ color: 'skyblue' }}>your Count is "{count}"</h2>
+      <h2 style={{ color: 'skyblue' }}>
+        <div>your Count is "{count}"</div>
+        <small style={{ color: 'skyblue' }}>
+          (Login전이면 +1해서 "1", 후이면 -1해서 "0")
+        </small>
+      </h2>
       <strong style={{ float: 'left', color: 'red' }}>{badCount}</strong>
       <strong style={{ float: 'right', color: 'green' }}>{goodCount}</strong>
       <ChildComponent ref={childRef} />

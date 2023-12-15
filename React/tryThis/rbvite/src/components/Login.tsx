@@ -6,6 +6,7 @@ import {
   useRef,
 } from 'react';
 import { useSession } from '../hooks/session-context';
+import { useCounter } from '../hooks/counter-context';
 
 export type LoginHandle = {
   focusName: () => void;
@@ -15,6 +16,7 @@ const Login = forwardRef((_, handleRef) => {
   const { login } = useSession();
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const { count, plusCount, minusCount } = useCounter();
   console.log('>>Login');
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
@@ -32,10 +34,19 @@ const Login = forwardRef((_, handleRef) => {
   useImperativeHandle(handleRef, () => ({
     focusName,
   }));
-  //focus
+
   useEffect(() => {
     if (idRef.current) idRef.current.value = '100';
     focusName();
+  }, []);
+
+  useEffect(() => {
+    plusCount();
+    console.log('❗️ Login please', count);
+    return () => {
+      minusCount();
+      console.log('✅ Login-cleanup code', count);
+    };
   }, []);
 
   return (

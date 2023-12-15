@@ -37,7 +37,7 @@ const Hello = forwardRef(
             backgroundColor: 'skyblue',
           }}
         >
-          Hello, {name} ({age}세)
+          Hello, {name} ({age}세 )
         </h2>
         {children}
         <button
