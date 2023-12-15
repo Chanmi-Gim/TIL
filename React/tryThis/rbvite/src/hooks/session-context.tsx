@@ -35,7 +35,7 @@ export const SessionContextProvider = ({ children }: PropsWithChildren) => {
   const data = useFetch<Session>(url);
   useEffect(() => {
     if (data) setSession(data);
-    console.log('data: ', data);
+    console.log('session-data: ', data);
   }, [data]);
 
   const login = ({ id, name }: LoginUser) => {

@@ -17,7 +17,7 @@ const Login = forwardRef((_, handleRef) => {
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const { count, plusCount, minusCount } = useCounter();
-  console.log('>>Login');
+  // console.log('>>Login');
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // action 타지 않는다.

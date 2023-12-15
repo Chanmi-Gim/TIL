@@ -35,7 +35,7 @@ function App() {
   useInterval(() => setGoodCount((pre) => pre + 1), 1000);
   useTimeout(
     (initSec) => {
-      console.log('>>useEffect');
+      // console.log('>>useEffect');
       setBadCount(initSec);
       setGoodCount(initSec);
     },

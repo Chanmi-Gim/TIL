@@ -4,7 +4,7 @@ import Profile from './Profile';
 import Login from './Login';
 
 const My = () => {
-  console.log('@@@My');
+  // console.log('@@@My');
   const {
     session: { loginUser, cart },
     saveCartItem,
