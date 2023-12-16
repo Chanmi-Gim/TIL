@@ -1,57 +1,54 @@
-import {
-  PropsWithChildren,
-  forwardRef,
-  useId,
-  useImperativeHandle,
-} from 'react';
+import { forwardRef, memo, useEffect, useId, useImperativeHandle } from 'react';
 import { useCounter } from '../hooks/counter-context';
 import { Sample } from './Sample';
 
 type Props = {
-  name: string;
   age: number;
-  plusCount: () => void;
-  children?: React.ReactNode;
+  fn: () => void;
 };
 
 export type GiftHandle = {
   getGift: () => void;
 };
 
-const Hello = forwardRef(
-  ({ name, age, children }: PropsWithChildren<Props>, handleRef) => {
-    const helloId = useId();
-    const { plusCount } = useCounter();
-    const getGift = () => {
-      alert('안뇽 나는 기프트야! 자식 Hello로부터 와써~~~🎉');
-    };
-    useImperativeHandle(handleRef, () => ({
-      getGift,
-    }));
+export const Hello = forwardRef(({ age, fn }: Props, handleRef) => {
+  console.log('Hello.age>>', age);
+  const helloId = useId();
+  const { plusCount } = useCounter();
+  const getGift = () => {
+    alert('안뇽 나는 기프트야! 자식 Hello로부터 와써~~~🎉');
+  };
+  useImperativeHandle(handleRef, () => ({
+    getGift,
+  }));
 
-    return (
-      <div>
-        <Sample></Sample>
-        <h2
-          id={helloId}
-          style={{
-            color: 'white',
-            backgroundColor: 'skyblue',
-          }}
-        >
-          Hello, {name} ({age}세 )
-        </h2>
-        {children}
-        <button
-          onClick={plusCount}
-          style={{ width: 300, textDecorationColor: 'blue' }}
-        >
-          Count UP!
-        </button>
-        <hr />
-      </div>
-    );
-  }
-);
-// Hello.defaultProps = { name: 'Choi' };
-export default Hello;
+  useEffect(() => {
+    console.log('child.fn>>>', age, fn());
+  }, [age, fn]);
+
+  return (
+    <div>
+      <Sample></Sample>
+      <h2
+        id={helloId}
+        style={{
+          color: 'white',
+          backgroundColor: 'skyblue',
+        }}
+      >
+        Hello,({age}세 )
+      </h2>
+      <button
+        onClick={plusCount}
+        style={{ width: 300, textDecorationColor: 'blue' }}
+      >
+        Count UP!
+      </button>
+      <hr />
+    </div>
+  );
+});
+export const MemoHello = memo(Hello, ({ age }, { age: age2 }) => {
+  console.log('preProps', age, age2);
+  return age === age2;
+});

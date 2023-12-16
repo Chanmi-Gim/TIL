@@ -1,15 +1,17 @@
 import {
   forwardRef,
+  useCallback,
   // useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import './App.css';
-import Hello, { GiftHandle } from './components/Hello';
 import My from './components/My';
 import { useCounter } from './hooks/counter-context';
 import { useTimer } from './hooks/timer-hooks';
+import { GiftHandle, MemoHello } from './components/Hello';
 
 type ChildHandler = {
   appendPeriod: () => void;
@@ -24,13 +26,14 @@ const ChildComponent = forwardRef((_, ref) => {
 });
 
 function App() {
-  const { count, plusCount } = useCounter();
+  const { count } = useCounter();
   const childRef = useRef<ChildHandler>(null);
   const giftHandleRef = useRef<GiftHandle>(null);
   const [badCount, setBadCount] = useState(0);
   const [goodCount, setGoodCount] = useState(0);
   const { useInterval, useTimeout } = useTimer();
-
+  const fn = useCallback(() => 'fn!', []);
+  const age = useMemo(() => count + 1, []);
   useInterval(() => setBadCount((pre) => pre + 1), 1000);
   useInterval(() => setGoodCount((pre) => pre + 1), 1000);
   useTimeout(
@@ -47,12 +50,7 @@ function App() {
       <button onClick={() => giftHandleRef.current?.getGift()}>
         🎁 선물받기
       </button>
-      <Hello
-        name='cm'
-        age={30}
-        plusCount={plusCount}
-        ref={giftHandleRef}
-      ></Hello>
+      <MemoHello age={age} ref={giftHandleRef} fn={fn}></MemoHello>
       <h2 style={{ color: 'skyblue' }}>
         <div>your Count is "{count}"</div>
         <small style={{ color: 'skyblue' }}>
