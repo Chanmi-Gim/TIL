@@ -1,6 +1,6 @@
 # Today I Learned
 
-It's a repository that records the knowledge you learned today.
+It's a repository that records the knowledge I learned today.
 
 ## NestJS
 
@@ -15,6 +15,7 @@ It's a repository that records the knowledge you learned today.
 -   리액트 장점
 -   DOM & Rendering
 -   JSX (JavaScript XML)
+-   브라우저 저장공간
 
 ## JavaScript
 
