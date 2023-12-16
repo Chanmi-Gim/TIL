@@ -5,6 +5,7 @@ import {
   useImperativeHandle,
 } from 'react';
 import { useCounter } from '../hooks/counter-context';
+import { Sample } from './Sample';
 
 type Props = {
   name: string;
@@ -30,6 +31,7 @@ const Hello = forwardRef(
 
     return (
       <div>
+        <Sample></Sample>
         <h2
           id={helloId}
           style={{
@@ -46,6 +48,7 @@ const Hello = forwardRef(
         >
           Count UP!
         </button>
+        <hr />
       </div>
     );
   }
