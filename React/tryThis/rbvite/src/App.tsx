@@ -1,7 +1,6 @@
 import {
   forwardRef,
   useCallback,
-  // useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -26,7 +25,7 @@ const ChildComponent = forwardRef((_, ref) => {
 });
 
 function App() {
-  const { count } = useCounter();
+  const { count, minusCount } = useCounter();
   const childRef = useRef<ChildHandler>(null);
   const giftHandleRef = useRef<GiftHandle>(null);
   const [badCount, setBadCount] = useState(0);
@@ -51,6 +50,10 @@ function App() {
         🎁 선물받기
       </button>
       <MemoHello age={age} ref={giftHandleRef} fn={fn}></MemoHello>
+      <button onClick={minusCount} style={{ width: 300 }}>
+        Count down!
+      </button>
+      <hr></hr>
       <h2 style={{ color: 'skyblue' }}>
         <div>your Count is "{count}"</div>
         <small style={{ color: 'skyblue' }}>
@@ -67,6 +70,7 @@ function App() {
       </div>
       <hr></hr>
       <My />
+      <hr />
     </>
   );
 }

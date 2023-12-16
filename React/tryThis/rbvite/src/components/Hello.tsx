@@ -1,4 +1,11 @@
-import { forwardRef, memo, useEffect, useId, useImperativeHandle } from 'react';
+import {
+  forwardRef,
+  memo,
+  useEffect,
+  useId,
+  useImperativeHandle,
+  useReducer,
+} from 'react';
 import { useCounter } from '../hooks/counter-context';
 import { Sample } from './Sample';
 
@@ -15,6 +22,7 @@ export const Hello = forwardRef(({ age, fn }: Props, handleRef) => {
   console.log('Hello.age>>', age);
   const helloId = useId();
   const { plusCount } = useCounter();
+  const [isActive, toggleActive] = useReducer((preActive) => !preActive, false);
   const getGift = () => {
     alert('안뇽 나는 기프트야! 자식 Hello로부터 와써~~~🎉');
   };
@@ -45,6 +53,8 @@ export const Hello = forwardRef(({ age, fn }: Props, handleRef) => {
         Count UP!
       </button>
       <hr />
+      Active : {isActive ? 'Active' : 'Passive'}
+      <button onClick={toggleActive}>Toggle</button>
     </div>
   );
 });
