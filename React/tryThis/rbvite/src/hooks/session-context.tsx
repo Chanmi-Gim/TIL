@@ -3,7 +3,7 @@ import {
   createContext,
   useContext,
   useEffect,
-  useState,
+  useReducer,
 } from 'react';
 import { useFetch } from './fetch-hooks';
 
@@ -28,25 +28,56 @@ const SessionContext = createContext<SessionContextProp>({
   removeCartItem: () => {},
 });
 
-export const SessionContextProvider = ({ children }: PropsWithChildren) => {
-  const [session, setSession] = useState<Session>(DEFAULT_SESSION);
+enum ActionType {
+  LOGIN = 'login',
+  LOGOUT = 'logout',
+  SAVE_ITEM = 'saveCartItem',
+  REMOVE_ITEM = 'removeCartItem',
+  SET_SESSION = 'setSession',
+}
+type Action =
+  | { type: ActionType.SET_SESSION; payload: Session }
+  | { type: ActionType.LOGIN; payload: LoginUser }
+  | { type: ActionType.LOGOUT; payload: null }
+  | { type: ActionType.SAVE_ITEM; payload: Cart[] }
+  | { type: ActionType.REMOVE_ITEM; payload: number };
 
+const reducer = (session: Session, action: Action) => {
+  switch (action.type) {
+    case ActionType.SET_SESSION:
+      return { ...action.payload };
+    case ActionType.LOGIN:
+    case ActionType.LOGOUT:
+      return { ...session, loginUser: action.payload };
+    case ActionType.SAVE_ITEM:
+      return { ...session, cart: [...action.payload] };
+    case ActionType.REMOVE_ITEM:
+      return {
+        ...session,
+        cart: session.cart.filter((item) => item.id !== action.payload),
+      };
+  }
+};
+
+export const SessionContextProvider = ({ children }: PropsWithChildren) => {
+  const [session, dispatch] = useReducer(reducer, DEFAULT_SESSION);
   const url = '/data/sample.json';
   const data = useFetch<Session>(url);
   useEffect(() => {
-    if (data) setSession(data);
-    console.log('session-data: ', data);
+    if (data) {
+      dispatch({ type: ActionType.SET_SESSION, payload: data });
+    }
   }, [data]);
 
   const login = ({ id, name }: LoginUser) => {
     if (!name) {
-      alert('Input users name, Please.');
+      alert('Input User Name, Please');
       return;
     }
-    setSession({ ...session, loginUser: { id, name } });
+    dispatch({ type: ActionType.LOGIN, payload: { id, name } });
   };
   const logout = () => {
-    setSession({ ...session, loginUser: null });
+    dispatch({ type: ActionType.LOGOUT, payload: null });
   };
   const saveCartItem = (
     itemId: number,
@@ -54,25 +85,19 @@ export const SessionContextProvider = ({ children }: PropsWithChildren) => {
     itemPrice: number
   ) => {
     const { cart } = session;
-    itemId = itemId || Math.max(...session.cart.map((cart) => cart.id), 0) + 1;
-    const item = cart.find((item) => item.id === itemId);
+    const item = itemId && cart.find((item) => item.id === itemId);
     if (item) {
       item.name = itemName;
       item.price = itemPrice;
     } else {
+      itemId = Math.max(...session.cart.map((cart) => cart.id), 0) + 1;
       cart.push({ id: itemId, name: itemName, price: itemPrice });
     }
-    setSession({
-      ...session,
-      cart: [...cart],
-    });
+    dispatch({ type: ActionType.SAVE_ITEM, payload: cart });
   };
 
   const removeCartItem = (itemId: number) => {
-    setSession({
-      ...session,
-      cart: session.cart.filter((x) => x.id !== itemId),
-    });
+    dispatch({ type: ActionType.REMOVE_ITEM, payload: itemId });
   };
 
   return (
