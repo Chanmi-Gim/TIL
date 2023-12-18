@@ -16,6 +16,7 @@ It's a repository that records the knowledge I learned today.
 -   DOM & Rendering
 -   JSX (JavaScript XML)
 -   브라우저 저장공간
+-   Hooks(useReducer)
 
 ## JavaScript
 
