@@ -11,6 +11,7 @@ import My from './components/My';
 import { useCounter } from './hooks/counter-context';
 import { useTimer } from './hooks/timer-hooks';
 import { GiftHandle, MemoHello } from './components/Hello';
+// import { SessionContextProvider } from './hooks/session-context';
 
 type ChildHandler = {
   appendPeriod: () => void;
@@ -46,6 +47,7 @@ function App() {
   );
   return (
     <>
+      {/* <SessionContextProvider> */}
       <button onClick={() => giftHandleRef.current?.getGift()}>
         🎁 선물받기
       </button>
@@ -71,6 +73,7 @@ function App() {
       <hr></hr>
       <My />
       <hr />
+      {/* </SessionContextProvider> */}
     </>
   );
 }

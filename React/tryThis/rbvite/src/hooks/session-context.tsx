@@ -15,7 +15,7 @@ type SessionContextProp = {
   removeCartItem: (id: number) => void;
 };
 
-const DEFAULT_SESSION = {
+const DEFAULT_SESSION: Session = {
   loginUser: null,
   cart: [],
 };
@@ -29,11 +29,11 @@ const SessionContext = createContext<SessionContextProp>({
 });
 
 enum ActionType {
+  SET_SESSION = 'setSession',
   LOGIN = 'login',
   LOGOUT = 'logout',
   SAVE_ITEM = 'saveCartItem',
   REMOVE_ITEM = 'removeCartItem',
-  SET_SESSION = 'setSession',
 }
 type Action =
   | { type: ActionType.SET_SESSION; payload: Session }
@@ -42,31 +42,60 @@ type Action =
   | { type: ActionType.SAVE_ITEM; payload: Cart[] }
   | { type: ActionType.REMOVE_ITEM; payload: number };
 
+const SKEY = 'SESSION';
+
+const setStorage = (session: Session | undefined) => {
+  if (!session) return;
+  const { loginUser, cart } = session;
+  sessionStorage.setItem(SKEY, JSON.stringify(loginUser));
+  localStorage.setItem(SKEY, JSON.stringify(cart));
+};
+
+const getStorage = () => {
+  const strLoginUser = sessionStorage.getItem(SKEY);
+  const strCart = localStorage.getItem(SKEY);
+  if (!strCart || strCart === '[]') return undefined;
+  const loginUser = strLoginUser ? JSON.parse(strLoginUser) : null;
+  const cart = JSON.parse(strCart);
+  return { loginUser, cart };
+};
+
 const reducer = (session: Session, action: Action) => {
+  let newer: Session;
   switch (action.type) {
     case ActionType.SET_SESSION:
-      return { ...action.payload };
+      newer = { ...action.payload };
+      break;
     case ActionType.LOGIN:
     case ActionType.LOGOUT:
-      return { ...session, loginUser: action.payload };
+      newer = { ...session, loginUser: action.payload };
+      break;
     case ActionType.SAVE_ITEM:
-      return { ...session, cart: [...action.payload] };
+      newer = { ...session, cart: [...action.payload] };
+      break;
     case ActionType.REMOVE_ITEM:
-      return {
+      newer = {
         ...session,
-        cart: session.cart.filter((item) => item.id !== action.payload),
+        cart: session?.cart.filter((item) => item.id !== action.payload),
       };
+      break;
   }
+  setStorage(newer as Session);
+  return newer;
 };
 
 export const SessionContextProvider = ({ children }: PropsWithChildren) => {
-  const [session, dispatch] = useReducer(reducer, DEFAULT_SESSION);
+  const storedData = getStorage();
+  console.log('Stored data:', storedData);
+  const [session, dispatch] = useReducer(
+    reducer,
+    storedData || DEFAULT_SESSION
+  );
   const url = '/data/sample.json';
-  const data = useFetch<Session>(url);
+  const data = useFetch<Session>(url, storedData);
+  console.log('Fetched data:', data);
   useEffect(() => {
-    if (data) {
-      dispatch({ type: ActionType.SET_SESSION, payload: data });
-    }
+    if (data) dispatch({ type: ActionType.SET_SESSION, payload: data });
   }, [data]);
 
   const login = ({ id, name }: LoginUser) => {
@@ -76,9 +105,11 @@ export const SessionContextProvider = ({ children }: PropsWithChildren) => {
     }
     dispatch({ type: ActionType.LOGIN, payload: { id, name } });
   };
+
   const logout = () => {
     dispatch({ type: ActionType.LOGOUT, payload: null });
   };
+
   const saveCartItem = (
     itemId: number,
     itemName: string,

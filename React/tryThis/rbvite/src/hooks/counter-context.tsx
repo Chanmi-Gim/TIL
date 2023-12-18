@@ -10,7 +10,7 @@ type CounterContextProps = {
   plusCount: () => void;
   minusCount: () => void;
 };
-type Action = { type: string; payload?: number };
+type Action = { type: 'plus' | 'minus'; payload?: number };
 const reducer = (count: number, { type, payload = 1 }: Action) => {
   switch (type) {
     case 'plus':
