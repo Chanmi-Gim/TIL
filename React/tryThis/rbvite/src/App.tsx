@@ -26,7 +26,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/my' element={<My />} />
           <Route path='/items' element={<Items />} />
-          <Route path='/items' element={<Item />} />
+          <Route path='/items/:id' element={<Item />} />
           <Route path='/hello' element={<MemoHello age={age} fn={fn} />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

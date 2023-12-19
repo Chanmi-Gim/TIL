@@ -8,5 +8,4 @@ export const NotFound = () => {
   const { useTimeout } = useTimer();
   useTimeout(() => navigate(-1), 2000);
   return <h1>{location.pathname}: Page Not Found!</h1>;
-  //   return <Navigate to='/Home' />;
 };
