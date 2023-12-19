@@ -75,7 +75,7 @@ export const Items = () => {
             </button>
             <small>({price.toLocaleString()}원)</small>
             <button onClick={() => removeCartItem(id)}>X</button>
-            <Link to={`./${id}`} state={{ name, price }}>
+            <Link to={`./${id}?aaa=b`} state={{ name, price }}>
               go
             </Link>
           </li>

@@ -56,3 +56,7 @@ nav ul {
   justify-content: center;
   gap: 1rem;
 }
+
+nav a.active {
+  color: red;
+}
