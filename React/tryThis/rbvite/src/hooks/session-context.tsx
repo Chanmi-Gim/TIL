@@ -1,6 +1,7 @@
 import {
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useReducer,
@@ -61,7 +62,7 @@ const getStorage = () => {
 };
 
 const reducer = (session: Session, action: Action) => {
-  let newer: Session;
+  let newer;
   switch (action.type) {
     case ActionType.SET_SESSION:
       newer = { ...action.payload };
@@ -80,7 +81,7 @@ const reducer = (session: Session, action: Action) => {
       };
       break;
   }
-  setStorage(newer as Session);
+  setStorage(newer);
   return newer;
 };
 
@@ -98,38 +99,40 @@ export const SessionContextProvider = ({ children }: PropsWithChildren) => {
     if (data) dispatch({ type: ActionType.SET_SESSION, payload: data });
   }, [data]);
 
-  const login = ({ id, name }: LoginUser) => {
+  const login = useCallback(({ id, name }: LoginUser) => {
     if (!name) {
       alert('Input User Name, Please');
       return;
     }
     dispatch({ type: ActionType.LOGIN, payload: { id, name } });
-  };
+  }, []);
 
-  const logout = () => {
-    dispatch({ type: ActionType.LOGOUT, payload: null });
-  };
+  const logout = useCallback(() => {
+    if (session.loginUser) dispatch({ type: ActionType.LOGOUT, payload: null });
+  }, [session]);
 
-  const saveCartItem = (
-    itemId: number,
-    itemName: string,
-    itemPrice: number
-  ) => {
-    const { cart } = session;
-    const item = itemId && cart.find((item) => item.id === itemId);
-    if (item) {
-      item.name = itemName;
-      item.price = itemPrice;
-    } else {
-      itemId = Math.max(...session.cart.map((cart) => cart.id), 0) + 1;
-      cart.push({ id: itemId, name: itemName, price: itemPrice });
-    }
-    dispatch({ type: ActionType.SAVE_ITEM, payload: cart });
-  };
+  const saveCartItem = useCallback(
+    (itemId: number, itemName: string, itemPrice: number) => {
+      const { cart } = session;
+      const item = itemId && cart.find((item) => item.id === itemId);
+      if (item) {
+        item.name = itemName;
+        item.price = itemPrice;
+      } else {
+        itemId = Math.max(...session.cart.map((cart) => cart.id), 0) + 1;
+        cart.push({ id: itemId, name: itemName, price: itemPrice });
+      }
+      dispatch({ type: ActionType.SAVE_ITEM, payload: cart });
+    },
+    [session]
+  );
 
-  const removeCartItem = (itemId: number) => {
-    dispatch({ type: ActionType.REMOVE_ITEM, payload: itemId });
-  };
+  const removeCartItem = useCallback(
+    (itemId: number) => {
+      dispatch({ type: ActionType.REMOVE_ITEM, payload: itemId });
+    },
+    [session]
+  );
 
   return (
     <SessionContext.Provider

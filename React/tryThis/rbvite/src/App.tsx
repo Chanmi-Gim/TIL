@@ -33,7 +33,7 @@ function App() {
   const [goodCount, setGoodCount] = useState(0);
   const { useInterval, useTimeout } = useTimer();
   const fn = useCallback(() => 'fn!', []);
-  const age = useMemo(() => count + 1, []);
+  const age = useMemo(() => count + 1, [count]);
   useInterval(() => setBadCount((pre) => pre + 1), 1000);
   useInterval(() => setGoodCount((pre) => pre + 1), 1000);
   useTimeout(
@@ -47,7 +47,6 @@ function App() {
   );
   return (
     <>
-      {/* <SessionContextProvider> */}
       <button onClick={() => giftHandleRef.current?.getGift()}>
         🎁 선물받기
       </button>
@@ -73,7 +72,6 @@ function App() {
       <hr></hr>
       <My />
       <hr />
-      {/* </SessionContextProvider> */}
     </>
   );
 }

@@ -16,7 +16,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off', //app을 안써도 됨
     'react/jsx-uses-react': 'off', // jsx에서 리액트 안써도 됨
     'react-hooks/rules-of-hooks': 'error', //훅에 관련된 에러 잡아달라고
-    'react-hooks/exhaustive-deps': 'off', // 끄는걸 권장
+    'react-hooks/exhaustive-deps': 'warn', // 끄는걸 권장
     'react/prop-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off', // 끄고 하는게 좋음(any 남발 x)
     'prettier/prettier': 'error',

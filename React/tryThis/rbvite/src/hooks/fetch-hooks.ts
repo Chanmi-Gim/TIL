@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
 const cacheUrlData: Record<string, unknown> = {};
+
 const fetchByCache = async (url: string, init: RequestInit) => {
-  console.log('fetchByCache>>>', url, cacheUrlData);
+  console.log('fetchByCache>>>', cacheUrlData);
   if (url in cacheUrlData) return cacheUrlData[url];
   const res = await fetch(url, init);
   const data = await res.json();
@@ -12,7 +13,6 @@ const fetchByCache = async (url: string, init: RequestInit) => {
 
 export const useFetch = <T>(url: string, cachedData?: T) => {
   const [data, setData] = useState<T | undefined>(cachedData);
-
   useEffect(() => {
     if (data) return;
     const controller = new AbortController();

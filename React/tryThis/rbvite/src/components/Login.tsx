@@ -47,7 +47,7 @@ const Login = forwardRef((_, handleRef) => {
       minusCount();
       console.log('✅ Login-cleanup code', count);
     };
-  }, []);
+  }, [plusCount, minusCount]);
 
   return (
     <form onSubmit={submit}>
