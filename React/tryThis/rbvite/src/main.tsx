@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { CounterContextProvider } from './hooks/counter-context.tsx';
-import { SessionContextProvider } from './hooks/session-context.tsx';
+import { BrowserRouter } from 'react-router-dom';
 // import { SessionContextProvider } from './hooks/session-context';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <CounterContextProvider>
-      <SessionContextProvider>
+      <BrowserRouter>
         <App />
-      </SessionContextProvider>
+      </BrowserRouter>
     </CounterContextProvider>
   </React.StrictMode>
 );
