@@ -11,6 +11,7 @@ import { useCallback, useMemo } from 'react';
 import { useCounter } from './hooks/counter-context';
 import { Items } from './components/Items';
 import { Item } from './components/Item';
+import { ItemLayout } from './components/ItemLayout';
 
 function App() {
   const { count } = useCounter();
@@ -25,8 +26,10 @@ function App() {
           <Route path='/ttt' element={<h1>ttt</h1>} />
           <Route path='/login' element={<Login />} />
           <Route path='/my' element={<My />} />
-          <Route path='/items' element={<Items />} />
-          <Route path='/items/:id' element={<Item />} />
+          <Route path='/items' element={<ItemLayout />}>
+            <Route index element={<Items />} />
+            <Route path=':id' element={<Item />} />
+          </Route>
           <Route path='/hello' element={<MemoHello age={age} fn={fn} />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

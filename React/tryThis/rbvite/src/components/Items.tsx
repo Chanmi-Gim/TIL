@@ -1,18 +1,35 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useSession } from '../hooks/session-context';
 import './Items.css';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Items = () => {
   const {
     session: { cart },
     saveCartItem,
-    removeCartItem,
   } = useSession();
+
   const itemIdRef = useRef<number>(0);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
   const [hasDirty, setDirty] = useState(false);
+  const currItem = useLocation().state;
+  const navigate = useNavigate();
+
+  const {
+    id: itemId,
+    name: itemName,
+    price: itemPrice,
+  } = currItem?.item || { id: 0, name: '', price: 0 };
+
+  useEffect(() => {
+    if (itemNameRef.current && itemPriceRef.current) {
+      itemIdRef.current = itemId;
+      itemNameRef.current.value = itemName;
+      itemPriceRef.current.value = itemPrice + '';
+    }
+  }, [itemId, itemName, itemPrice]);
+
   const checkDirty = () => {
     const id = itemIdRef.current;
     const name = itemNameRef.current?.value;
@@ -25,6 +42,7 @@ export const Items = () => {
         };
     setDirty(name !== selectedItem.name || price !== selectedItem.price);
   };
+
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = itemNameRef.current?.value;
@@ -42,44 +60,12 @@ export const Items = () => {
     itemNameRef.current.value = '';
     itemPriceRef.current.value = '';
     setDirty(false);
-  };
-
-  const setCartItem = (id: number) => {
-    itemIdRef.current = id;
-    const selectedItem = cart.find((item) => item.id === id) || {
-      name: '',
-      price: 0,
-    };
-    if (itemNameRef.current && itemPriceRef.current) {
-      itemNameRef.current.value = selectedItem?.name;
-      itemPriceRef.current.value = selectedItem?.price.toString();
-    }
+    navigate('.', { state: '' });
   };
 
   return (
     <>
-      <ul>
-        {cart.map(({ id, name, price }) => (
-          <li key={id}>
-            <small>[id:{id}]</small>{' '}
-            <button
-              onClick={() => setCartItem(id)}
-              style={{
-                paddingTop: 0,
-                paddingBottom: '0.2rem',
-                backgroundColor: 'inherit',
-              }}
-              title='수정하기'
-            >
-              <strong>{name}</strong>
-            </button>
-            <small>({price.toLocaleString()}원)</small>
-            <button onClick={() => removeCartItem(id)}>X</button>
-            <Link to={`./${id}?aaa=b`} state={{ name, price }}>
-              go
-            </Link>
-          </li>
-        ))}
+      <div>
         <form onSubmit={submit}>
           <input type='text' ref={itemNameRef} onChange={() => checkDirty()} />
           <input
@@ -89,7 +75,7 @@ export const Items = () => {
           />
           {hasDirty && <button type='submit'>Save</button>}
         </form>
-      </ul>
+      </div>
     </>
   );
 };
