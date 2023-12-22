@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useSession } from '../hooks/session-context';
 import './Items.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 
 export const Items = () => {
   const {
@@ -13,14 +13,15 @@ export const Items = () => {
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
   const [hasDirty, setDirty] = useState(false);
-  const currItem = useLocation().state;
-  const navigate = useNavigate();
-
+  const { currItem, setCurrItem } = useOutletContext<{
+    currItem: Cart | undefined;
+    setCurrItem: React.Dispatch<React.SetStateAction<Cart | undefined>>;
+  }>();
   const {
     id: itemId,
     name: itemName,
     price: itemPrice,
-  } = currItem?.item || { id: 0, name: '', price: 0 };
+  } = currItem || { id: 0, name: '', price: 0 };
 
   useEffect(() => {
     if (itemNameRef.current && itemPriceRef.current) {
@@ -60,7 +61,7 @@ export const Items = () => {
     itemNameRef.current.value = '';
     itemPriceRef.current.value = '';
     setDirty(false);
-    navigate('.', { state: '' });
+    setCurrItem(undefined);
   };
 
   return (
