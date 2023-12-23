@@ -18,9 +18,16 @@ It's a repository that records the knowledge I learned today.
 -   브라우저 저장공간
 -   Routing
 -   Hooks(useReducer)
+-   Hooks(useState)
+-   Hooks(useRef)
+-   Hooks(forwardRef & useImperativeHandle)
+-   Hooks(useEffect)
+-   Hooks(memoization - useMemo, useCallback, memo)
+-   useId
 
 ## JavaScript
 
+-   Object&Property
 -   Iterator
 -   Promise
 -   Execute Context
