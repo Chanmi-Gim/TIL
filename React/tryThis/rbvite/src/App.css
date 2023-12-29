@@ -60,3 +60,12 @@ nav ul {
 nav a.active {
   color: red;
 }
+
+div center-flex-3rem {
+  display: 'flex';
+  alignitems: 'center';
+  padding: '3rem';
+}
+.no-list {
+  list-style: 'none';
+}

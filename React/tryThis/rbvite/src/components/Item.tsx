@@ -1,32 +1,23 @@
-import {
-  Link,
-  // useLocation,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
-import { useSession } from '../hooks/session-context';
-import { useEffect, useState } from 'react';
+import { Link, useOutletContext } from 'react-router-dom';
 
 export const Item = () => {
-  const {
-    session: { cart },
-  } = useSession();
-  const { id } = useParams();
-  const { currItem } = useOutletContext<{ currItem: Cart | undefined }>();
-  const [item, setItem] = useState<Cart | undefined>(undefined);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const _item = currItem || cart.find((item) => item.id === Number(id));
-    if (!_item) navigate('./');
-    setItem(_item);
-  }, [item, navigate, cart, id, currItem]);
+  const { item, saveCartItem } = useOutletContext<{
+    item: Cart;
+    saveCartItem: SaveCartItem;
+  }>();
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '3rem' }}>
+      <div
+        style={{
+          alignItems: 'center',
+          padding: '3rem',
+          border: '2px solid green',
+        }}
+      >
+        {!item && <h2>Select Item, plz</h2>}
+        {'  '}
         {item?.id}. {item?.name} ({item?.price.toLocaleString()}원)
-        <Link to={`/items`}>
+        <Link to={`/items`} state={{ item }}>
           <strong>Edit</strong>
         </Link>
       </div>

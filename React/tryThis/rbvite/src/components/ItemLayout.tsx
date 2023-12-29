@@ -1,16 +1,28 @@
-import { Link, Outlet, useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import { useSession } from '../hooks/session-context';
 import './ItemLayout.css';
 import clsx from 'clsx';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 export const ItemLayout = () => {
   const {
     session: { cart },
     removeCartItem,
+    saveCartItem,
   } = useSession();
+  const [items, setItems] = useState<Cart[]>([]);
+  const [currItem, setCurrItem] = useState<Cart | null>(null);
   const [searchParams, setSearchParams] = useSearchParams({ searchStr: '' });
-  const [currItem, setCurrItem] = useState<Cart | undefined>(undefined);
+  const searchStr = searchParams.get('searchStr');
+
+  useEffect(() => {
+    if (searchStr)
+      setItems(cart.filter((item) => item.name.includes(searchStr || '')));
+    else setItems(cart);
+  }, [cart, searchStr]);
+
+  useEffect(() => {
+    setCurrItem(items[0]);
+  }, [items]);
 
   return (
     <>
@@ -23,31 +35,35 @@ export const ItemLayout = () => {
           }
           className={clsx('input')}
         />
-        <div className={clsx('ul')}>
-          <ul>
+        <div
+          style={{
+            margin: '1rem',
+            display: 'grid',
+            gridTemplateColumns: '2fr 2fr',
+            gap: '1rem',
+            width: '80vw',
+          }}
+        >
+          <ul style={{ listStyle: 'none' }}>
             {cart
               .filter((item) =>
                 item.name.includes(searchParams.get('searchStr') || '')
               )
               .map((item) => (
                 <li key={item.id}>
-                  <small>{item.id}</small>
-                  {/* <Link to={`/items/${item.id}`} state={item}>
-                    <strong>{item.name}</strong>
-                    {setCurrItem(item.name)}
-                  </Link> */}
+                  <small>
+                    [{item.id}]{'  '}
+                  </small>
                   <button onClick={() => setCurrItem(item)}>
-                    <Link to={`/items/${item.id}`}>
-                      <strong>{item.name}</strong>
-                    </Link>
+                    <strong>{item.name}</strong>
                   </button>
                   <small>({item.price.toLocaleString()}원)</small>
                   <button onClick={() => removeCartItem(item.id)}>X</button>
                 </li>
               ))}
-          </ul>{' '}
+          </ul>
+          <Outlet context={{ item: currItem, saveCartItem }} />
         </div>
-        <Outlet context={{ currItem, setCurrItem }} />
       </div>
     </>
   );

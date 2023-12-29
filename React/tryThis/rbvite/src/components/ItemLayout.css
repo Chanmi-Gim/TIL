@@ -1,7 +1,8 @@
-.ul {
-  display: flex;
-  flex-direction: row;
-}
 .input {
   width: 30rem;
+}
+
+.skyblue-border {
+  border-color: skyblue;
+  border-width: 1rem;
 }
