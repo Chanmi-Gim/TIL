@@ -11,18 +11,28 @@ export const ItemLayout = () => {
   } = useSession();
   const [items, setItems] = useState<Cart[]>([]);
   const [currItem, setCurrItem] = useState<Cart | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams({ searchStr: '' });
-  const searchStr = searchParams.get('searchStr');
+  const [searchParams, setSearchParams] = useSearchParams({
+    searchStr: '',
+    itemId: '',
+  });
+  const searchStr = searchParams.get('searchStr') || '';
+  const itemId = searchParams.get('itemId') || '';
 
   useEffect(() => {
     if (searchStr)
-      setItems(cart.filter((item) => item.name.includes(searchStr || '')));
-    else setItems(cart);
+      setItems(
+        cart
+          .filter((item) => item.name.includes(searchStr || ''))
+          .sort((a, b) => b.id - a.id)
+      );
+    else setItems(cart.sort((a, b) => b.id - a.id));
   }, [cart, searchStr]);
 
   useEffect(() => {
-    setCurrItem(items[0]);
-  }, [items]);
+    if (itemId)
+      setCurrItem(cart.find((item) => item.id === Number(itemId)) || null);
+    else setCurrItem(items[0]);
+  }, [cart, items, itemId]);
 
   return (
     <>
@@ -31,7 +41,7 @@ export const ItemLayout = () => {
           type='text'
           value={searchParams.get('searchStr') || ''}
           onChange={(e) =>
-            setSearchParams({ searchStr: e.currentTarget.value })
+            setSearchParams({ searchStr: e.currentTarget.value, itemId })
           }
           className={clsx('input')}
         />
@@ -44,24 +54,39 @@ export const ItemLayout = () => {
             width: '80vw',
           }}
         >
-          <ul style={{ listStyle: 'none' }}>
-            {cart
-              .filter((item) =>
-                item.name.includes(searchParams.get('searchStr') || '')
-              )
-              .map((item) => (
-                <li key={item.id}>
+          <div>
+            <ul style={{ listStyle: 'none' }}>
+              {items.map((item) => (
+                <li
+                  key={item.id}
+                  className={clsx({ active: item.id === currItem?.id })}
+                >
                   <small>
                     [{item.id}]{'  '}
                   </small>
-                  <button onClick={() => setCurrItem(item)}>
-                    <strong>{item.name}</strong>
+                  <button
+                    onClick={() => {
+                      setCurrItem(item);
+                      setSearchParams({ searchStr, itemId: String(item.id) });
+                    }}
+                  >
+                    <strong>{item?.name}</strong>
                   </button>
-                  <small>({item.price.toLocaleString()}원)</small>
+                  <small>({item?.price.toLocaleString()}원)</small>
                   <button onClick={() => removeCartItem(item.id)}>X</button>
                 </li>
               ))}
-          </ul>
+            </ul>
+            <button
+              onClick={() => {
+                setCurrItem({ id: 0, name: '', price: 0 });
+                setSearchParams({ searchStr });
+              }}
+              style={{ backgroundColor: 'skyblue', width: '10rem' }}
+            >
+              + Add Item
+            </button>
+          </div>
           <Outlet context={{ item: currItem, saveCartItem }} />
         </div>
       </div>

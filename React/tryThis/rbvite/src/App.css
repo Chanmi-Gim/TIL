@@ -66,6 +66,7 @@ div center-flex-3rem {
   alignitems: 'center';
   padding: '3rem';
 }
+
 .no-list {
-  list-style: 'none';
+  list-style: none;
 }
