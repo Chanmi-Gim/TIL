@@ -27,6 +27,10 @@ It's a repository that records the knowledge I learned today.
 -   Hooks(memoization - useMemo, useCallback, memo)
 -   useId
 
+## NextJS
+
+-   개요 및 렌더링 방법
+
 ## JavaScript
 
 -   Object&Property
