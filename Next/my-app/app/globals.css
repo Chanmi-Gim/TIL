@@ -18,10 +18,8 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+.btn {
+  @apply rounded-full bg-blue-200 px-3 hover:bg-blue-500;
 }
